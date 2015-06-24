@@ -17,24 +17,6 @@
 <body>
 
 <script>
-  //var plugin = {
-  //  endPoints: [
-  //    {
-  //      destinationColumn: 0,
-  //      reversedRowCoords: false,
-  //      destinationRow: 4,
-  //      sourceColumn: 4,
-  //      ranges: [
-  //        [0,4],[6],[8,9]
-  //      ],
-  //      type: 'custom',
-  //      customFunction: function() {
-  //      },
-  //      forceNumeric: true,
-  //      suppressDataTypeErrors: true,
-  //      readOnly: true
-  //    }
-  //  ]
 var dataArray = function(num) {
   var arr = [
     [1, 2, 3, 4, 5],
@@ -138,7 +120,7 @@ var dataArray = function(num) {
         }
       ]
       </div>
-  <div class="hotExample" id="destExample1"></div>
+  <div class="hotExample stdDim" id="destExample1"></div>
   <script class="preview">
     var destExample1 = document.querySelector('#destExample1'),
         destExample1Hot;
@@ -166,7 +148,7 @@ var dataArray = function(num) {
         }
       ]
       </div>
-  <div class="hotExample" id="destExample2"></div>
+  <div class="hotExample stdDim" id="destExample2"></div>
   <script class="preview">
     var destExample2 = document.querySelector('#destExample2'),
         destExample2Hot;
@@ -215,7 +197,7 @@ var dataArray = function(num) {
       </div>
   <p>This would take into consideration only the third column (as first column has an index of 0), regardless of the destination cell coordinates.</p>
 
-  <div class="hotExample" id="rangeExample1"></div>
+  <div class="hotExample stdDim" id="rangeExample1"></div>
   <script class="preview">
     var rangeExample1 = document.querySelector('#rangeExample1'),
         rangeExample1Hot;
@@ -251,7 +233,7 @@ var dataArray = function(num) {
     ]
   </div>
   <p>See the following example:</p>
-  <div class="hotExample" id="sumExample"></div>
+  <div class="hotExample stdDim" id="sumExample"></div>
   <script class="preview">
     var sumExample = document.querySelector('#sumExample'),
         sumExampleHot;
@@ -283,7 +265,7 @@ var dataArray = function(num) {
     ]
   </div>
   <p>See the following example:</p>
-  <div class="hotExample" id="minExample"></div>
+  <div class="hotExample stdDim" id="minExample"></div>
   <script class="preview">
     var minExample = document.querySelector('#minExample'),
         minExampleHot;
@@ -315,7 +297,7 @@ var dataArray = function(num) {
     ]
   </div>
   <p>See the following example:</p>
-  <div class="hotExample" id="maxExample"></div>
+  <div class="hotExample stdDim" id="maxExample"></div>
   <script class="preview">
     var maxExample = document.querySelector('#maxExample'),
         maxExampleHot;
@@ -346,7 +328,7 @@ var dataArray = function(num) {
     ]
   </div>
 <p>See the following example:</p>
-<div class="hotExample" id="countExample"></div>
+<div class="hotExample stdDim" id="countExample"></div>
 <script class="preview">
   var countExample = document.querySelector('#countExample'),
       countExampleHot;
@@ -378,7 +360,7 @@ var dataArray = function(num) {
     ]
   </div>
   <p>See the following example:</p>
-  <div class="hotExample" id="avgExample"></div>
+  <div class="hotExample stdDim" id="avgExample"></div>
   <script class="preview">
     var avgExample = document.querySelector('#avgExample'),
         avgExampleHot;
@@ -414,7 +396,7 @@ var dataArray = function(num) {
     ]
   </div>
   <p>See the following example:</p>
-  <div class="hotExample" id="customExample"></div>
+  <div class="hotExample stdDim" id="customExample"></div>
   <script class="preview">
     var avgExample = document.querySelector('#customExample'),
         customExampleHot;
@@ -492,7 +474,7 @@ var dataArray = function(num) {
     ]
   </div>
   <p>See the following example:</p>
-  <div class="hotExample" id="forceExample"></div>
+  <div class="hotExample stdDim" id="forceExample"></div>
   <script class="preview">
     var forceExample = document.querySelector('#forceExample'),
         forceExampleHot;
