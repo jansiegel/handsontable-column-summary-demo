@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fixed bottom rows + columnSummary plugin demo - Feature guid</title>
+  <script src="../../../dist/handsontable.full.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/languages/javascript.min.js"></script>
+
+
+  <link rel="stylesheet" media="screen" href="../../../dist/handsontable.full.css">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="screen" href="style.css">
+
+  <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
+</head>
+<body>
+
+<script>
+  //var plugin = {
+  //  endPoints: [
+  //    {
+  //      destinationColumn: 0,
+  //      reversedRowCoords: false,
+  //      destinationRow: 4,
+  //      sourceColumn: 4,
+  //      ranges: [
+  //        [0,4],[6],[8,9]
+  //      ],
+  //      type: 'custom',
+  //      customFunction: function() {
+  //      },
+  //      forceNumeric: true,
+  //      suppressDataTypeErrors: true,
+  //      readOnly: true
+  //    }
+  //  ]
+var dataArray = function(num) {
+  var arr = [
+    [1, 2, 3, 4, 5],
+    [6, 7, 8, 9, 10],
+    [11, 12, 13, 14, 15],
+    [16, 17, 18, 19, 20],
+    [],
+    []
+  ];
+
+  if(arr.length < num) {
+    for(var i = arr.length; i <= num; i++) {
+      arr.push([]);
+    }
+  }
+
+  return arr;
+};
+</script>
+
+<header>
+  <h1>Plugin features/options:</h1>
+
+  <h3>Basic:</h3>
+  <ul>
+    <li><a href="#init">Basic plugin setup</a></li>
+    <li><a href="#destination">Setting the destination cell</a></li>
+    <li><a href="#range">Setting the calculation range</a></li>
+  </ul>
+  <h3>Calculation types:</h3>
+  <ul>
+    <li><a href="#sum">Sum</a></li>
+    <li><a href="#min">Min</a></li>
+    <li><a href="#max">Max</a></li>
+    <li><a href="#count">Count</a></li>
+    <li><a href="#avg">Average</a></li>
+    <li><a href="#custom">Custom</a></li>
+  </ul>
+  <h3>Additional options:</h3>
+  <ul>
+    <li><a href="#force">Force numeric values</a></li>
+    <li><a href="#err">Throwing datatype errors</a></li>
+    <li><a href="#readOnly">Making destination cells read-only</a></li>
+  </ul>
+  <h3>Fix bottom rows:</h3>
+  <ul>
+    <li><a href="#fixedBottom">Basic setup</a></li>
+    <li><a href="#fixedSpareRows">Usage with minSpareRows</a></li>
+  </ul>
+</header>
+
+<div id="init" class="middle-pane">
+  <h2>Basic setup</h2>
+  <p>To initialize the <i>columnSummary</i> plugin, you need to properly set a property in the Handsontable initial config:</p>
+  <div class="codeExample">
+
+    var hot = new Handsontable(example, {
+      data: Handsontable.helper.createSpreadsheetData(50, 20),
+
+      // plugin declaration
+      columnSummary: [
+        {
+          destinationRow: 2,
+          destinationColumn: 2,
+          type: 'min',
+          // other options...
+        },
+        {
+          destinationRow: 3,
+          destinationColumn: 3,
+          type: 'max',
+          // other options...
+        }
+      ]
+    });
+
+</div>
+
+  <p>As you can see, <i>columnSummary</i> config item is an array of objects.
+    <br> Each object in the array represents a single <i>endpoint</i> (the "output" cell, or a single calculation).</p>
+
+  <p>You can see what happens inside the endpoints by calling:</p>
+  <div class="codeExample">
+    // hot variable hold the refference to the Handsontable instance
+    var columnSummaryPlugin = hot.getPlugin('columnSummary');
+
+    var endpoints = columnSummaryPlugin.endpoints;
+      </div>
+</div>
+
+<div id="destination" class="middle-pane">
+  <h2>Setting the destination cell</h2>
+  <p>The <i>columnSummary</i> plugin requires the user to provide the destination coords (row and column number) for the cell to display the calculations results in.</p>
+  <p>To do that, you need to set two properties in the Handsontable config object:</p>
+  <div class="codeExample">
+      columnSummary: [
+        {
+          destinationRow: 4,
+          destinationColumn: 0
+          // other options...
+        }
+      ]
+      </div>
+  <div class="hotExample" id="destExample1"></div>
+  <script class="preview">
+    var destExample1 = document.querySelector('#destExample1'),
+        destExample1Hot;
+
+    destExample1Hot = new Handsontable(destExample1, {
+      data: dataArray(),
+      columnSummary: [
+        {
+          destinationRow: 4,
+          destinationColumn: 0,
+          type: 'sum'
+        }
+      ]
+    });
+  </script>
+  <p>Setting it as above puts the calculation result in cell at [4,0].</p>
+  <p>If you would like, however, to choose a cell near the bottom of the table (for example in the bottom fixed rows, if you're using the <i>fixedRowsBottom</i> feature)
+  you might find useful another columnSummary option, <i>reversedRowCoords</i>:</p>
+  <div class="codeExample">
+      columnSummary: [
+        {
+          destinationRow: 4,
+          destinationColumn: 0,
+          reversedRowCoords: true
+        }
+      ]
+      </div>
+  <div class="hotExample" id="destExample2"></div>
+  <script class="preview">
+    var destExample2 = document.querySelector('#destExample2'),
+        destExample2Hot;
+
+    destExample2Hot = new Handsontable(destExample2, {
+      data: dataArray(10),
+      columnSummary: [
+        {
+          destinationRow: 4,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'sum'
+        }
+      ]
+    });
+  </script>
+  <p>This setup would return the calculation value to a cell in the first column, and 5th row <b>counting front the end of the table</b> (for example, if the table has a total
+  of 10 rows, it would enter the result to the 6th row).</p>
+  <p>By default, <i>reversedRowCoords</i> is set to <b>false</b>.</p>
+</div>
+
+<div id="range" class="middle-pane">
+  <h2>Setting the calculation range</h2>
+  <p>By default, the plugin makes calculations on data from all rows in the destination column. However, you can specify it differently (both column and row-wise).</p>
+  <p>The options responsible for this kind of behaviour are <i>ranges</i> and <i>sourceColumn</i>.<br><br>
+  - <strong>ranges</strong> option specifies the row range to make calculations on. It should be declared as an array of array, where the latter are range declarations. See the following example:</p>
+  <div class="codeExample">
+        columnSummary: [
+          {
+            // other options
+            ranges: [
+              [0,4],[6],[8,9]
+            ]
+          }
+        ]
+      </div>
+  <p>In this example the calculations would be made for rows: 0,1,2,3,4, 6, 8,9.</p>
+  - <strong>sourceColumn</strong> option specifies the column to work on. In example:
+    <div class="codeExample">
+        columnSummary: [
+          {
+            // other options
+            sourceColumn: 2
+          }
+        ]
+      </div>
+  <p>This would take into consideration only the third column (as first column has an index of 0), regardless of the destination cell coordinates.</p>
+
+  <div class="hotExample" id="rangeExample1"></div>
+  <script class="preview">
+    var rangeExample1 = document.querySelector('#rangeExample1'),
+        rangeExample1Hot;
+
+    rangeExample1Hot = new Handsontable(rangeExample1, {
+      data: dataArray(5),
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'sum',
+          ranges: [
+            [0],[2,4]
+          ],
+          sourceColumn: 2
+        }
+      ]
+    });
+  </script>
+  <p>This example has the <i>sourceColumn</i> set to <b>2</b> and <i>ranges</i> set to <b>[0],[2,4]</b></p>
+</div>
+
+<div id="sum" class="middle-pane">
+  <h2>Sum function</h2>
+  <p>To use the sum function on your table, you need to set the <i>type</i> property to <b>'sum'</b></p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        type: 'sum'
+      }
+    ]
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="sumExample"></div>
+  <script class="preview">
+    var sumExample = document.querySelector('#sumExample'),
+        sumExampleHot;
+
+    sumExampleHot = new Handsontable(sumExample, {
+      data: dataArray(5),
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'sum'
+        }
+      ]
+    });
+  </script>
+
+</div>
+
+<div id="min" class="middle-pane">
+  <h2>Minimum function</h2>
+  <p>To find a minimum value in the range you declared, you need to set the <i>type</i> property to <b>'min'</b></p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        type: 'min'
+      }
+    ]
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="minExample"></div>
+  <script class="preview">
+    var minExample = document.querySelector('#minExample'),
+        minExampleHot;
+
+    minExampleHot = new Handsontable(minExample, {
+      data: dataArray(5),
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'min'
+        }
+      ]
+    });
+  </script>
+
+</div>
+
+<div id="max" class="middle-pane">
+  <h2>Maximum function</h2>
+  <p>To find a maximum value in the range you declared, you need to set the <i>type</i> property to <b>'max'</b></p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        type: 'max'
+      }
+    ]
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="maxExample"></div>
+  <script class="preview">
+    var maxExample = document.querySelector('#maxExample'),
+        maxExampleHot;
+
+    maxExampleHot = new Handsontable(maxExample, {
+      data: dataArray(5),
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'max'
+        }
+      ]
+    });
+  </script>
+</div>
+
+<div id="count" class="middle-pane">
+<h2>Count function</h2>
+<p>To count the non-empty values in the range you declared, you need to set the <i>type</i> property to <b>'count'</b></p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        type: 'count'
+      }
+    ]
+  </div>
+<p>See the following example:</p>
+<div class="hotExample" id="countExample"></div>
+<script class="preview">
+  var countExample = document.querySelector('#countExample'),
+      countExampleHot;
+
+  countExampleHot = new Handsontable(countExample, {
+    data: dataArray(5),
+    columnSummary: [
+      {
+        destinationRow: 0,
+        destinationColumn: 0,
+        reversedRowCoords: true,
+        type: 'count'
+      }
+    ]
+  });
+</script>
+
+</div>
+
+<div id="avg" class="middle-pane">
+  <h2>Average function</h2>
+  <p>To get the average value from the values in the range you declared, you need to set the <i>type</i> property to <b>'average'</b></p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        type: 'average'
+      }
+    ]
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="avgExample"></div>
+  <script class="preview">
+    var avgExample = document.querySelector('#avgExample'),
+        avgExampleHot;
+
+    avgExampleHot = new Handsontable(avgExample, {
+      data: dataArray(5),
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'average'
+        }
+      ]
+    });
+  </script>
+</div>
+
+<div id="custom" class="middle-pane">
+  <h2>Custom function</h2>
+  <p>To use a custom function to operate on the values in the range you declared, you need to set the <i>type</i> property to <b>'custom'</b> and <i>customFunction</i> to the function itself.</p>
+  <p>Note: Your function is executed in the context of the plugin. This way you can access all its methods, as well as the main Handsontable instance object.</p>
+  <p>See the below implementation as an example. It counts all the cells with an 'extraProperty = true' added as a cell meta.</p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        type: 'custom',
+        customFunction: function () {
+          // your function
+        }
+      }
+    ]
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="customExample"></div>
+  <script class="preview">
+    var avgExample = document.querySelector('#customExample'),
+        customExampleHot;
+
+    customExampleHot = new Handsontable(customExample, {
+      data: dataArray(5),
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'custom',
+          customFunction: function(endpoint) {
+            // this function counts all cells with a metadata "extraProperty" set to true
+
+
+            // endpoint argument contains data connected to the summary endpoint
+            // this.hot is a refference to the main Handsontable instance
+            var hotInstance = this.hot;
+            var counter = 0;
+
+            // helper function
+            function checkRange(rowRange) {
+              var i = rowRange[1] || rowRange[0];
+              var counter = 0;
+
+              do {
+
+                if (hotInstance.getCellMeta(i, endpoint.sourceColumn).extraProperty === true) {
+                  counter++;
+                }
+
+                i--;
+              } while (i >= rowRange[0]);
+              return counter;
+            }
+
+            // go through all declared ranges
+            for (var r in endpoint.ranges) {
+              if (endpoint.ranges.hasOwnProperty(r)) {
+                counter += checkRange(endpoint.ranges[r]);
+              }
+            }
+
+            return counter;
+          }
+        }
+      ],
+      afterInit: function() {
+        // set the extra property to certain cells
+        this.setCellMeta(0, 0, 'extraProperty', true);
+        this.setCellMeta(1, 0, 'extraProperty', true);
+        this.setCellMeta(2, 0, 'extraProperty', false);
+        this.setCellMeta(3, 0, 'extraProperty', true);
+        this.setCellMeta(4, 0, 'extraProperty', 'different value');
+
+        // ensure the summary values are up to date:
+        this.getPlugin('ColumnSummary').refreshAllEndpoints();
+      }
+    });
+  </script>
+</div>
+
+<div id="force" class="middle-pane">
+  <h2>Forcing numeric values</h2>
+  <p>If your table contains not only numeric data, you can try to force the values to be numeric. For example, "9a" can be treated as "9". To try forcing the numeric type, you need to set the <i>forceNumeric</i> property to <b>true</b>.<br>
+  Note: if the numeric-forcing fails, Handsontable either throws an error or skips the value in the calculation, depending on the <a href="#err">suppressDataTypeErrors</a> settting.</p>
+  <p>The default <i>forceNumeric</i> value is <b>false</b></p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        forceNumeric: true
+      }
+    ]
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="forceExample"></div>
+  <script class="preview">
+    var forceExample = document.querySelector('#forceExample'),
+        forceExampleHot;
+
+    forceExampleHot = new Handsontable(forceExample, {
+      data: [
+          [1, 2, 3],
+          ['4a', 5, 6],
+          [7, 8, 9],
+          [],
+          []
+      ],
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'sum',
+          forceNumeric: true
+        }
+      ]
+    });
+  </script>
+</div>
+
+<div id="err" class="middle-pane">
+  <h2>Throwing data type errors</h2>
+  <p>If your table contains not only numeric data, you can either skip them in the calculation or throw an error (or try to parse them to float using the <i>forceNumeric</i> option). To throw errors in this situation, you need to set the <i>suppressDataTypeErrors</i> property to <b>false</b>.<br>
+    By default, the <i>suppressDataTypeErrors</i> is set to <b>true</b></p>
+  <div class="codeExample">
+    columnSummary: [
+      {
+        // other options
+        suppressDataTypeErrors: false
+      }
+    ]
+  </div>
+</div>
+
+
+<div id="fixedBottom" class="middle-pane">
+  <h2>Fixed bottom rows</h2>
+  <p>To freeze bottom rows of your table, you need to set the <i>fixedRowsBottom</i> to a numer of rows you want to freeze. (analogously to the fixedRowsTop option).</p>
+  <div class="codeExample">
+    hot = new Handsontable(element, {
+      data: getData(),
+      fixedRowsBottom: 2
+    });
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="fixed"></div>
+  <script class="preview">
+    var fixed = document.querySelector('#fixed'),
+        fixedHot;
+
+    fixedHot = new Handsontable(fixed, {
+      data: dataArray(30),
+      fixedRowsBottom: 2,
+      height: 200,
+      width: 250
+    });
+  </script>
+</div>
+
+<div id="fixedSpareRows" class="middle-pane">
+  <h2>Fixed bottom rows with minSpareRows option</h2>
+  <p>To make the bottom rows the "summary rows", you might find useful combining the <i>fixedRowsBottom</i> and <i>minSpareRows</i> options.
+    This way, whatever you do to the table, the fixed bottom rows will always be empty (and therefore ready for you to fill with summary data).</p>
+  <div class="codeExample">
+    hot = new Handsontable(element, {
+      data: getData(),
+      fixedRowsBottom: 2,
+      minSpareRows: 2
+    });
+  </div>
+  <p>See the following example:</p>
+  <div class="hotExample" id="spare"></div>
+  <script class="preview">
+    var spare = document.querySelector('#spare'),
+        spareHot;
+
+    spareHot = new Handsontable(spare, {
+      data: Handsontable.helper.createSpreadsheetData(15, 10),
+      fixedRowsBottom: 2,
+      minSpareRows: 2,
+      height: 200,
+      width: 250
+    });
+  </script>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad();
+  hljs.configure({useBR: true});
+
+  function previewCode() {
+    var scripts = document.querySelectorAll('script.preview');
+    var divs = document.querySelectorAll('div.codeExample');
+    cloneScripts(scripts);
+    cloneScripts(divs);
+
+  }
+
+  function cloneScripts(scripts) {
+    for(var i = 0; i < scripts.length; i++) {
+      if(scripts[i].hasAttribute('src')) {
+        continue;
+      }
+
+      var pre = document.createElement('PRE');
+      var code = document.createElement('CODE');
+      code.className = 'javascript preview';
+      code.innerText = scripts[i].innerText || script[i].textContent;
+      pre.appendChild(code);
+
+      scripts[i].parentNode.insertBefore(pre, scripts[i]);
+    }
+  }
+
+  previewCode();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+html, body {
+    background: #23b5dc;
+}
+
+h1, h2, h3, h4 {
+    color: #fff;
+    font-weight: bold;
+}
+
+h1, h2, h3 {
+    text-align: left;
+    margin: 0px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+h1 .smaller {
+    font-size: 15px;
+}
+
+.semibold {
+    font-weight: 600;
+}
+
+header {
+    margin: 0px auto;
+    display: block;
+    padding-bottom: 10pt;
+    padding: 20pt;
+}
+
+header h3 {
+    margin-bottom: 5px;
+    color: #9ad8e8;
+}
+
+#example {
+    margin: 0px auto;
+    width: 85%;
+    overflow: hidden;
+}
+
+.middle-pane:first-of-type {
+    margin-top: 50pt;
+}
+
+.middle-pane {
+    width: 100%;
+    background: #21abd0;
+    padding-bottom: 10pt;
+    padding: 20pt;
+    color: #fff;
+    font-weight: 300;
+    margin-bottom: 20pt;
+}
+
+.middle-pane a {
+    color: #fff;
+    font-weight: bold;
+}
+
+* {
+    font-family: "Open Sans";
+    box-sizing: border-box;
+}
+
+.handsontable {
+    font-weight: 100;
+    font-size: 10pt;
+    color: #000;
+}
+
+ul {
+    list-style: none;
+}
+
+ul li:before {
+    content: "• ";
+    color: rgb(154, 216, 232);
+    margin-right: 5pt;
+}
+
+li a {
+    font-weight: 400;
+    color: #fff;
+}
+
+code {
+    background: #F8FDFD !important;
+    padding: 10pt;
+    color: #000;
+    font-family: 'Lucida Sans Typewriter', 'Lucida Console', monaco, 'Bitstream Vera Sans Mono', monospace;
+    font-weight: lighter;
+    font-size: 10pt;
+}
+
+pre {
+    margin: 0;
+}
+
+td.columnSummaryResult {
+    background: #cdf6fa;
+}
+
+.codeExample {
+    display: none;
+}
+
+code.preview {
+    margin-bottom: 10pt;
+}
+
+.hotExample {
+    overflow: hidden;
+}

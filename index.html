@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Fixed bottom rows + columnSummary plugin demo</title>
+  <script src="../../dist/handsontable.full.js"></script>
+  <link rel="stylesheet" media="screen" href="../../dist/handsontable.full.css">
+  <!--<script src="bower_components/handsontable/dist/handsontable.full.js"></script>-->
+  <!--<link rel="stylesheet" media="screen" href="bower_components/handsontable/dist/handsontable.full.css">-->
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="screen" href="style.css">
+  <style>
+
+
+  </style>
+</head>
+<body>
+<header>
+  <h1>Handsontable</h1>
+
+  <h2>fixed bottom rows + columnSummary demo</h2>
+</header>
+
+<div id="middle-pane">
+  <div id="example"></div><br>
+  <a href="features/index.html">[ See the detailed feature guide ]</a>
+</div>
+
+<script type="text/javascript">
+
+  var elem = document.querySelector('#example');
+  var hot = new Handsontable(elem, {
+    data: [
+      ['Label One'],
+      ['', 23, 45, 62, 64, 27, 3, 64],
+      ['', 56, 25, 3, 6, 23, 75, 3],
+      ['Label Two'],
+      ['', 2, 5, 9, 10, 12, 15, 17],
+      ['', 5, 9, 10, 12, 16, 18, 20],
+      ['', 24, 30, 59, 79, 82, 85, 87],
+      ['', 4, 19, 31, 53, 59, 60, 86],
+      ['', 31, 63, 76, 80, 84, 94, 96],
+      ['Label Three'],
+      ['', 21, 28, 41, 42, 47, 93, 99],
+      ['', 1, 44, 45, 48, 65, 69, 98],
+      ['', 16, 29, 32, 34, 64, 84, 98],
+      ['', 2, 15, 18, 54, 61, 62, 71]
+    ],
+    minCols: 15,
+    minRows: 50,
+    maxRows: 53,
+    xrowHeaders: true,
+    xcolHeaders: true,
+    xfixedColumnsLeft: 2,
+    xfixedRowsTop: 3,
+    fixedRowsBottom: 3,
+    minSpareRows: 3,
+    xcontextMenu: true,
+    viewportColumnRenderingOffset: 2,
+    columnSummary: [
+      {
+        destinationColumn: 2,
+        destinationRow: 2,
+        reversedRowCoords: true,
+        type: 'min',
+        forceNumeric: true,
+        suppressDataTypeErrors: true
+      },
+      {
+        destinationColumn: 2,
+        destinationRow: 1,
+        reversedRowCoords: true,
+        type: 'max',
+        forceNumeric: true,
+        suppressDataTypeErrors: true
+      },
+      {
+        destinationColumn: 2,
+        destinationRow: 52,
+        type: 'sum',
+        forceNumeric: true,
+        suppressDataTypeErrors: true
+      },
+      {
+        destinationColumn: 4,
+        destinationRow: 50,
+        type: 'average',
+        forceNumeric: true,
+        suppressDataTypeErrors: true
+      },
+      {
+        destinationColumn: 4,
+        destinationRow: 51,
+        type: 'count',
+        forceNumeric: true,
+        suppressDataTypeErrors: true
+      },
+      {
+        destinationColumn: 4,
+        destinationRow: 52,
+        type: 'custom',
+        customFunction: function(endpoint) {
+
+          /* this function counts all cells with a metadata "extraProperty" set to true */
+
+
+          // endpoint contains data connected to the summary endpoint
+          // this.hot is a refference to the main Handsontable instance
+          var hotInstance = this.hot;
+          var counter = 0;
+
+          // helper function
+          function checkRange(rowRange) {
+            var i = rowRange[1] || rowRange[0];
+            var counter = 0;
+
+            do {
+
+              if (hotInstance.getCellMeta(i, endpoint.sourceColumn).extraProperty === true) {
+                counter++;
+              }
+
+              i--;
+            } while (i >= rowRange[0]);
+            return counter;
+          }
+
+          // go through all declared ranges
+          for (var r in endpoint.ranges) {
+            if (endpoint.ranges.hasOwnProperty(r)) {
+              counter += checkRange(endpoint.ranges[r]);
+            }
+          }
+
+          return counter;
+        },
+        forceNumeric: true,
+        suppressDataTypeErrors: true
+      }
+    ],
+    columns: [
+      {},{
+        className: 'greyHighlight'
+      },{},{
+        className: 'greyHighlight'
+      },{},{},{},{},{}
+    ],
+    width: 600,
+    height: 500,
+    afterInit: function() {
+      this.populateFromArray(50, 0, [
+        ['2nd data column:', 'Min:', '', 'Average:', ''],
+        ['', 'Max:', '', 'Count:', ''],
+        ['', 'Sum:', '', 'Custom:', '']
+      ]);
+
+      // set the extra property to certain cells
+      this.setCellMeta(4, 4, 'extraProperty', true);
+      this.setCellMeta(6, 4, 'extraProperty', true);
+      this.setCellMeta(10, 4, 'extraProperty', false);
+      this.setCellMeta(11, 4, 'extraProperty', true);
+      this.setCellMeta(12, 4, 'extraProperty', 'different value');
+
+      // ensure the summary values are up to date:
+      this.getPlugin('ColumnSummary').refreshAllEndpoints();
+    }
+  });
+
+</script>
+</body>
+</html>
