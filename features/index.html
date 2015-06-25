@@ -60,6 +60,7 @@ var dataArray = function(num) {
     <li><a href="#force">Force numeric values</a></li>
     <li><a href="#err">Throwing datatype errors</a></li>
     <li><a href="#readOnly">Making destination cells read-only</a></li>
+    <li><a href="#roundFloat">Rounding values after the decimal point</a></li>
   </ul>
   <h3>Fix bottom rows:</h3>
   <ul>
@@ -514,6 +515,65 @@ var dataArray = function(num) {
   </div>
 </div>
 
+<div id="readOnly" class="middle-pane">
+  <h2>Making the summary cells read-only</h2>
+  <p>With the <i>readOnly</i> parameter you can easily set the endpoint cell as read-only, by setting it to <b>true</b></p>
+  <p>See the following example:</p>
+  <div class="hotExample stdDim" id="readOnlyExample"></div>
+  <script class="preview">
+    var readOnlyExample = document.querySelector('#readOnlyExample'),
+        readOnlyExampleHot;
+
+    readOnlyExampleHot = new Handsontable(readOnlyExample, {
+      data: [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [],
+        []
+      ],
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'sum',
+          readOnly: true
+        }
+      ]
+    });
+  </script>
+</div>
+
+<div id="roundFloat" class="middle-pane">
+  <h2>Rounding the values</h2>
+  <p>If you wish to round the calculation result to a specific number of digits after the decimal point, you need to use the <i>roundFloat</i> parameter.
+    It's value will result in rounding the result to the appropriate amound of digits.</p>
+  <div class="hotExample stdDim" id="roundExample"></div>
+  <script class="preview">
+    var roundExample = document.querySelector('#roundExample'),
+        roundExampleHot;
+
+    roundExampleHot = new Handsontable(roundExample, {
+      data: [
+        [3, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [],
+        []
+      ],
+      columnSummary: [
+        {
+          destinationRow: 0,
+          destinationColumn: 0,
+          reversedRowCoords: true,
+          type: 'average',
+          roundFloat: 3
+        }
+      ]
+    });
+  </script>
+</div>
 
 <div id="fixedBottom" class="middle-pane">
   <h2>Fixed bottom rows</h2>
@@ -543,6 +603,9 @@ var dataArray = function(num) {
   <h2>Fixed bottom rows with minSpareRows option</h2>
   <p>To make the bottom rows the "summary rows", you might find useful combining the <i>fixedRowsBottom</i> and <i>minSpareRows</i> options.
     This way, whatever you do to the table, the fixed bottom rows will always be empty (and therefore ready for you to fill with summary data).</p>
+  <p><b>Important: </b> If you want to fill the spare rows with the summary data, you will need to add a <i>maxRows</i> parameter, to specify the maximum
+  amount of rows for your table. (After filling the spare rows with data, Handsontable will add another empty rows - that's what the <i>minSpareRows</i> option is for).<br>
+  Please note, however, that if you wish to modify the row number in this situation, you will need to increment the <i>maxRows</i> property accordingly.</p>
   <div class="codeExample">
     hot = new Handsontable(element, {
       data: getData(),
