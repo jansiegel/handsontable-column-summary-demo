@@ -6,11 +6,11 @@
 
   <title>Fixed bottom rows + columnSummary plugin demo</title>
 
-  <script src="http://localhost/dist/handsontable.full.js"></script>
-  <link rel="stylesheet" media="screen" href="http://localhost/dist/handsontable.full.css">
+  <!--<script src="http://localhost/dist/handsontable.full.js"></script>-->
+  <!--<link rel="stylesheet" media="screen" href="http://localhost/dist/handsontable.full.css">-->
 
-  <!--<script src="lib/handsontable.full.js"></script>-->
-  <!--<link rel="stylesheet" media="screen" href="lib/handsontable.full.css">-->
+  <script src="lib/handsontable.full.js"></script>
+  <link rel="stylesheet" media="screen" href="lib/handsontable.full.css">
 
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" media="screen" href="style.css">
@@ -164,7 +164,7 @@
       this.setCellMeta(12, 4, 'extraProperty', 'different value');
 
       // ensure the summary values are up to date:
-      this.getPlugin('ColumnSummary').refreshAllEndpoints();
+      this.getPlugin('columnSummary').refreshAllEndpoints();
     }
   });
 
