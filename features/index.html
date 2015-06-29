@@ -67,6 +67,7 @@ var dataArray = function(num) {
     <li><a href="#fixedBottom">Basic setup</a></li>
     <li><a href="#fixedSpareRows">Usage with minSpareRows</a></li>
   </ul>
+  <h3><a href="../">All-in-one demo</a></h3>
 </header>
 
 <div id="init" class="middle-pane">
@@ -128,6 +129,7 @@ var dataArray = function(num) {
 
     destExample1Hot = new Handsontable(destExample1, {
       data: dataArray(),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 4,
@@ -156,6 +158,7 @@ var dataArray = function(num) {
 
     destExample2Hot = new Handsontable(destExample2, {
       data: dataArray(10),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 4,
@@ -205,6 +208,7 @@ var dataArray = function(num) {
 
     rangeExample1Hot = new Handsontable(rangeExample1, {
       data: dataArray(5),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -241,6 +245,7 @@ var dataArray = function(num) {
 
     sumExampleHot = new Handsontable(sumExample, {
       data: dataArray(5),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -273,6 +278,7 @@ var dataArray = function(num) {
 
     minExampleHot = new Handsontable(minExample, {
       data: dataArray(5),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -305,6 +311,7 @@ var dataArray = function(num) {
 
     maxExampleHot = new Handsontable(maxExample, {
       data: dataArray(5),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -336,6 +343,7 @@ var dataArray = function(num) {
 
   countExampleHot = new Handsontable(countExample, {
     data: dataArray(5),
+    type: 'numeric',
     columnSummary: [
       {
         destinationRow: 0,
@@ -368,6 +376,7 @@ var dataArray = function(num) {
 
     avgExampleHot = new Handsontable(avgExample, {
       data: dataArray(5),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -404,6 +413,7 @@ var dataArray = function(num) {
 
     customExampleHot = new Handsontable(customExample, {
       data: dataArray(5),
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -532,6 +542,7 @@ var dataArray = function(num) {
         [],
         []
       ],
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -562,6 +573,7 @@ var dataArray = function(num) {
         [],
         []
       ],
+      type: 'numeric',
       columnSummary: [
         {
           destinationRow: 0,
@@ -592,6 +604,7 @@ var dataArray = function(num) {
 
     fixedHot = new Handsontable(fixed, {
       data: dataArray(30),
+      type: 'numeric',
       fixedRowsBottom: 2,
       height: 200,
       width: 250

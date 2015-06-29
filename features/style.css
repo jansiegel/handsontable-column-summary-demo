@@ -121,3 +121,7 @@ code.preview {
     width: 400px;
     height: 200px;
 }
+
+h3 a {
+    color: #fff;
+}
